@@ -1,4 +1,4 @@
-    <HeliosSentry is a network scanner>
+    <HeliosSentry: Oracle of the Net is an all-in-one network scanner and vulnerability detection tool>
     Copyright (C) 2023 Yaron Bereza <yaronbereza@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
