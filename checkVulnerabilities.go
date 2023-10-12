@@ -111,6 +111,7 @@ type NmapOSMatch struct {
 }
 
 func checkVulnerabilities(host *Host) {
+	// Check for vulnerabilities on the host.
 	out, err := exec.Command("nmap", "-p-", "-sV", "--osscan-guess", "--max-retries", "1", "--max-scan-delay", "20ms", "--open", "-oX", "-", host.IP).Output()
 	if err != nil {
 		panic(err)

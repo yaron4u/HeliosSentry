@@ -44,6 +44,7 @@ func isPortOpen(ip string, port int) bool {
 // }
 
 func scanPortsNmap(ip string) []NmapPortInfo {
+	// This function uses Nmap to scan for open ports.
 	var wg sync.WaitGroup
 	var mutex sync.Mutex
 	var openPortsInfo []NmapPortInfo

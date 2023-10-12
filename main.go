@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 type Host struct {
@@ -12,6 +13,7 @@ type Host struct {
 }
 
 func generateReport(hosts []Host) {
+	// Generate a report of the scan results.
 	fmt.Println("Scanning Report")
 	fmt.Println("===============")
 	for _, host := range hosts {
@@ -48,15 +50,23 @@ func main() {
 	var scannedHosts []Host
 
 	println("Live hosts: ")
+	var wg sync.WaitGroup
+	var mutex sync.Mutex
 	for _, hostIP := range liveHosts {
-		println("-", hostIP)
-		host := &Host{
-			IP:        hostIP,
-			OpenPorts: scanPortsNmap(hostIP),
-		}
-		checkVulnerabilities(host)
-		scannedHosts = append(scannedHosts, *host)
+		wg.Add(1)
+		go func(ip string) {
+			defer wg.Done()
+			host := &Host{
+				IP:        ip,
+				OpenPorts: scanPortsNmap(ip),
+			}
+			checkVulnerabilities(host)
+			mutex.Lock()
+			scannedHosts = append(scannedHosts, *host)
+			mutex.Unlock()
+		}(hostIP)
 	}
+	wg.Wait()
 
 	generateReport(scannedHosts)
 }
