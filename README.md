@@ -2,6 +2,8 @@
 
 HeliosSentry is an all-in-one network scanner and vulnerability detection tool inspired by the all-seeing Greek sun god, Helios. Dive deep into your network landscape and illuminate hidden vulnerabilities.
 
+![HeliosSentryiconREADME](https://github.com/yaron4u/HeliosSentry/assets/67191566/facf4956-9081-4bf9-85a6-a735cbc1b4f1)
+
 ## Features
 
 - **IP Range Scanner:** Scan a range of IP addresses to detect live hosts.
