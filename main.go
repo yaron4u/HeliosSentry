@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 type Host struct {
@@ -31,25 +32,41 @@ func generateReport(hosts []Host) {
 	}
 }
 
+func loadingAnimation(done chan bool) {
+	animationChars := []string{"-", "\\", "|", "/"}
+	i := 0
+	for {
+		select {
+		case <-done:
+			fmt.Printf("\rDone scanning! \n")
+			return
+		default:
+			fmt.Printf("\rScanning... %s", animationChars[i%len(animationChars)])
+			i++
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
+
 func main() {
 	UserIIP, err := GetInternalIP() // Get internal IP address
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
-	println("My Internal IP: ", UserIIP)
+	fmt.Println("My Internal IP: ", UserIIP)
 
 	UserEIP, err := GetExternalIP() // Get external IP address
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
-	println("My External IP: ", UserEIP)
+	fmt.Println("My External IP: ", UserEIP)
 
 	liveHosts := scanIPRange("10.0.0.1", "10.0.0.255")
 	var scannedHosts []Host
 
-	println("Live hosts: ")
+	fmt.Println("Live hosts: ")
 	var wg sync.WaitGroup
 	var mutex sync.Mutex
 	for _, hostIP := range liveHosts {
@@ -66,7 +83,14 @@ func main() {
 			mutex.Unlock()
 		}(hostIP)
 	}
+
+	// Start loading animation in a separate goroutine
+	done := make(chan bool)
+	go loadingAnimation(done)
+
+	// Wait for all scanning goroutines to finish
 	wg.Wait()
+	done <- true // Stop the loading animation
 
 	generateReport(scannedHosts)
 }
