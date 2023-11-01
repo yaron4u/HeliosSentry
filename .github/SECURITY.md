@@ -12,7 +12,7 @@ Please do not disclose the vulnerability publicly or to any third parties. Respo
 
 #### 2. Email the Details
 
-Send an email to [yaron@example.com](mailto:vanitious@gmail.com) with the following information:
+Send an email to [vanitious@gmail.com](mailto:vanitious@gmail.com) with the following information:
 
 - A clear and detailed description of the vulnerability.
 - The steps to reproduce the vulnerability.
